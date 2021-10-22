@@ -119,7 +119,7 @@ public class CreacionComicTest {
 		List<ComicDTO> comicsActivos = new ArrayList<>();
 		
 		for (int i = 0; i < listaComics.size(); i++) {
-			//Se agregan los comics cuyo estado sea inactivo
+			//Se agregan los comics cuyo estado sea activo
 			if(listaComics.get(i).getEstadoEnum() == EstadoEnum.ACTIVO) {
 				comicsActivos.add(listaComics.get(i));
 			} 
