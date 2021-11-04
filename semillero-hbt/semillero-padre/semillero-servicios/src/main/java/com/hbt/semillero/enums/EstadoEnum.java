@@ -15,7 +15,7 @@ public enum EstadoEnum {
 	//Se definen los valores posibles tanto activo como inactivo para el estado del comic
 
 	ACTIVO("enum.estado.activo"), 
-	INACTIVO("enum.tematica.inactivo");
+	INACTIVO("enum.estado.inactivo");
 	
 	/**
 	 * Atributo que contiene la clave del mensaje para la internacionalizacion

@@ -13,7 +13,7 @@ import com.hbt.semillero.enums.TematicaEnum;
  * 
  * @author Personal
  */
-public class ComicDTO implements Serializable {
+public class ComicDTO extends ResultadoDTO  implements Serializable {
 
 	/**
 	 * Atributo que determina
@@ -67,7 +67,12 @@ public class ComicDTO implements Serializable {
 	private Long cantidad;
 	
 	
-	
+	/**
+	 * Constructor de la clase.
+	 */
+	public ComicDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Constructor de la clase.

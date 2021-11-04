@@ -19,7 +19,7 @@ public class CreacionVehiculoRest {
 		vehiculo1.setRequiereLicencia(true);
 		vehiculo1.setTipoVechiculo(TipoVehiculoEnum.TERRESTRE);
 		
-		Barco barco1 = new Barco();
+		Barco barco1 = new Barco(); 	
 		barco1.setColor("Blanco");
 		barco1.setNumeroAsientos(20);
 		barco1.setNumeroLlantas(0);
