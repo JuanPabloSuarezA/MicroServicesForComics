@@ -53,7 +53,7 @@ public class GestionarComicBean implements IGestionarComicLocal {
 	@Override
 	public ConsultaComicTamanioNombreDTO consultarComicTamanioNombre(Short lengthComic) {
 		//Se elabora la consulta
-		String findAllComic = " SELECT cm FROM Comic cm ";
+		String findAllComic = " SELECT cm.nombre FROM Comic cm ";
 		//Se genera el objeto a retornar 
 		ConsultaComicTamanioNombreDTO consultaComicTamanioNombreDTO = new ConsultaComicTamanioNombreDTO();
 		try {
@@ -61,14 +61,14 @@ public class GestionarComicBean implements IGestionarComicLocal {
 			Query queryFindAllComic = em.createQuery(findAllComic);
 			//Se obtienen todos los comics
 			@SuppressWarnings("unchecked")
-			List<Comic> listaComics = queryFindAllComic.getResultList();
+			List<String> listaComics = queryFindAllComic.getResultList();
 			//Se clasifican los nombres comparando su longitud con el parametro lengthComic
 			for (int i = 0; i < listaComics.size(); i++) {
-				if (listaComics.get(i).getNombre().length() >= lengthComic) {
-					consultaComicTamanioNombreDTO.setNombreMayorIgual(listaComics.get(i).getNombre());
+				if (listaComics.get(i).length() >= lengthComic) {
+					consultaComicTamanioNombreDTO.setNombreMayorIgual(listaComics.get(i));
 				}
 				else {
-					consultaComicTamanioNombreDTO.setNombreMenor(listaComics.get(i).getNombre());
+					consultaComicTamanioNombreDTO.setNombreMenor(listaComics.get(i));
 				}
 				
 			}
