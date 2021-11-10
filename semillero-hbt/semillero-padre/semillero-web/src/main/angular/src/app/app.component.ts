@@ -13,7 +13,8 @@ export class AppComponent {
   }  
 
   ngOnInit(): void {
+    // luego de la renderizacion se redirecciona al componente de bienvenida en home
     this.router.navigate(['bienvenida']);    
-    
+     
   }
 }

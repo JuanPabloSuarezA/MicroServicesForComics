@@ -1,0 +1,16 @@
+<p>Probando visualizacion de crear persona componente </p>
+
+<!-- interpolacion  -->
+<p> {{"Nombre instructor: "  + nombreInstructor}} </p>
+
+<!-- property binding -->
+<img [src]= "urlImagen" height="500" width="1000"/>
+
+
+<!-- event binding -->
+<button (click)="simularCrearComic()">Simular crear comic</button>
+ 
+
+<!-- two way binding -->
+<input type="text" class="form-control-plaintext" 
+id="staticEmail" [(ngModel)]="urlImagen" name="urlImagen">

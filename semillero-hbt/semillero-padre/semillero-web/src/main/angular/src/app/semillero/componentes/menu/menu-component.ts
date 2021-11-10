@@ -7,6 +7,11 @@ import { Router } from '@angular/router';
  * 
  * @author Diego Fernando Alvarez Silva <dalvarez@heinsohn.com.co>
  */
+/**
+ * @description componente para gestionar enrutamientos del menu
+ * @author Juan <jpsa4000@hotmail.com>
+ * @see CU1098 Gestionar Comic 
+ */
 @Component({
   selector: 'home-page',
   templateUrl: './menu-component.html',
@@ -16,6 +21,8 @@ export class MenuComponent implements OnInit {
   /**
    * Constructor de la clase
    * @param router permite direccionar a otros componentes
+   * se inyecta el router para acceder a metodos como navigate
+   * para navegar a otra vista 
    */
   constructor(private router: Router) {
 
