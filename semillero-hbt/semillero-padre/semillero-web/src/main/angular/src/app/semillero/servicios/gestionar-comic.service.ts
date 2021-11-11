@@ -48,11 +48,27 @@ export class GestionarComicService extends AbstractService {
     );
   }
 
-  public consultarComicsActivos(estadoComic: string): Observable<any> {
-    let params = new HttpParams().set("estadoComic",estadoComic);
+  public comprarComic(comicDTO: ComicDTO): Observable<any> {
+    return this.httpClient.post(
+      "http://localhost:8085/semillero-servicios/rest/gestionarCompraComic/comprarComic",
+      comicDTO
+    );
+  }
+
+
+  public consultarComicsPorTamanioNombre(lengthComic: number): Observable<any> {
+    let params = new HttpParams().set("lengthComic",lengthComic.toString());
     // let params = new HttpParams().set("comicDTO", JSON.stringify(comicDTO));
     return this.httpClient.get(
-      "http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarComicsActivos",
+      "http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarNombreTamanio",
+      { params: params }
+    );
+  }
+  public consultarComicsPorEstado(estadoEnum: string): Observable<any> {
+    let params = new HttpParams().set("estadoEnum",estadoEnum);
+    // let params = new HttpParams().set("comicDTO", JSON.stringify(comicDTO));
+    return this.httpClient.get(
+      "http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarComicsPorEstado",
       { params: params }
     );
   }

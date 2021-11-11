@@ -1,0 +1,67 @@
+<div class="container">
+  <!-- imprime en formato json el objeto comicDTO -->
+  <pre>{{ comicDTO | json }}</pre>
+  <pre>{{ nombre | json }}</pre>
+  <!-- con el form se llama la variable global con todos los campos del formulario -->
+  <form [formGroup]="gestionarComicForm">
+    <!-- mediante interpolacion cargar etiqueta del json -->
+    <h1>Listar comics por estado</h1>
+    <hr />
+    <!-- por cada fila hay 2 componentes -->
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="estadoEnum">Estado:</label>
+                <select class="form-control" id="estadoEnum" formControlName="estadoEnum">
+                    <option value="ACTIVO">ACTIVO</option>
+                    <option value="INACTIVO">INACTIVO</option>
+                </select>
+            </div>
+
+        </div>
+
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="consultarComicsPorTamanioNombre()"
+        >
+          Clasificar por  estado
+        </button>
+      </div>
+    </div>
+    <br />
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Tematica</th>
+              <th scope="col">Precio</th>
+              <th scope="col">A color</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--date:"MM/dd/yy"
+                            | uppercase-->
+            <tr *ngFor="let comic of listaComicsActivos; let i = index">
+              <th scope="row">{{ comic.id }}</th>
+              <td>{{ comic.nombre | uppercase }}</td>
+              <td>{{ comic.tematicaEnum | lowercase }}</td>
+              <td>{{ comic.precio | number: ".2" }}</td>
+              <td>{{ comic.color ? "Si" : "No" }}</td>
+              <td>{{ comic.cantidad }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+  </form>
+</div>

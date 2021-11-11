@@ -1,0 +1,67 @@
+<div class="container">
+  <!-- con el form se llama la variable global con todos los campos del formulario -->
+  <form [formGroup]="gestionarComicForm">
+    <!-- mediante interpolacion cargar etiqueta del json -->
+    <h1>Gestionar Compra Comic</h1>
+    <hr />
+    <!-- por cada fila hay 2 componentes -->
+
+    <!-- se agregan el nombre y la cantidad del comic -->
+    <div class="row">
+      <div class="col-6">
+        <!-- se ocupan 6 columnas por componente -->
+        <label>{{ "Nombre Comic: " + comicDTO.nombre }}</label>
+      </div>
+      <div class="col-6">
+        <label for="cantidad">Cantidad a comprar: </label>
+      </div>
+    </div>
+    <!-- se provee el input para agregar la cantidad a comprar -->
+
+    <div class="row">
+      <div class="col-6">
+        <span></span>
+      </div>
+      <div class="col-6 text-right">
+        <input
+          type="number"
+          class="form-control"
+          id="cantidad"
+          formControlName="cantidad"
+          [ngClass]="{ 'is-invalid': submitted && f.cantidad.errors }"
+        />
+        <!-- se muestra un mensaje de error en caso de campo vacio -->
+        <div *ngIf="submitted && f.cantidad.errors">
+          <span class="text-danger" *ngIf="f.cantidad.errors.required"
+            >Campo requerido.</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- se agregan los botones para comprar y cancelar  y se llaman con evento click usando eventbinding  -->
+
+    <div class="row">
+      <div class="col-6">
+        <span></span>
+      </div>
+      <div class="col-6 text-right">
+        <button type="button" class="btn btn-primary" (click)="comprarComic()">
+          Comprar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="cancelarCompra()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+
+
+    <!-- se muestra el mensaje de error en una alerta -->
+    <div *ngIf="mostrarItem" class="alert alert-danger" role="alert">
+      <pre>{{ mensajeEjecucion  }}</pre>
+      <button type="button" class="btn btn-primary" (click)="cerrar()">
+        Cerrar
+      </button>
+    </div>
+  </form>
+</div>

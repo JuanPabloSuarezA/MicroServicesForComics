@@ -1,0 +1,88 @@
+<div class="container">
+  <!-- imprime en formato json el objeto comicDTO -->
+  <!-- con el form se llama la variable global con todos los campos del formulario -->
+  <form [formGroup]="gestionarComicForm">
+    <!-- mediante interpolacion cargar etiqueta del json -->
+    <h1>Gestionar Comic</h1>
+    <hr />
+    <!-- por cada fila hay 2 componentes -->
+
+    <div class="row">
+      <div class="col-6">
+        <label for="lengthComic">Longitud de nombre de comic:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="lengthComic"
+          formControlName="lengthComic"
+          [ngClass]="{ 'is-invalid': submitted && f.lengthComic.errors }"
+        />
+        <div *ngIf="submitted && f.lengthComic.errors">
+          <span class="text-danger" *ngIf="f.lengthComic.errors.required"
+            >Campo requerido.</span
+          >
+          <span class="text-danger" *ngIf="f.lengthComic.errors.maxlength"
+            >El campo solo recibe 50 caracteres.</span
+          >
+        </div>
+      </div>
+
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="consultarComicsPorTamanioNombre()"
+        >
+          Clasificar por longitud
+        </button>
+      </div>
+    </div>
+    <br />
+
+    <label>Lista de comics mayores o iguales que la longitud :</label>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--date:"MM/dd/yy"
+                            | uppercase-->
+            <tr *ngFor="let comic of listaComicsMayor; let i = index">
+              <th scope="row">{{ i }}</th>
+              <td>{{ comic | uppercase }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <label>Lista de comics menores que la longitud :</label>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--date:"MM/dd/yy"
+                            | uppercase-->
+            <tr *ngFor="let comic of listaComicsMenor; let i = index">
+              <th scope="row">{{ i }}</th>
+              <td>{{ comic | uppercase }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+</div>

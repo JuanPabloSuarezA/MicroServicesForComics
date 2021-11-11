@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MensajeDTO } from '../../dto/Mensaje-DTO';
 
 /**
  * @description Componente menu, el cual contiene la logica para direccionar a los modulos
@@ -40,7 +41,10 @@ export class MenuComponent implements OnInit {
    * @author Diego Fernando Alvarez Silva <dalvarez@heinsohn.com.co>
    */
   public navegarGestionarComic(): void {
-    this.router.navigate(['gestionar-comic']);
+    //Se envia un mensaje vacio en la navegacion a gestionar comic para no mostrar el componente alert
+    let mensaje = new MensajeDTO();
+    mensaje.mensajeEjecucion = "";
+    this.router.navigate(['gestionar-comic' , mensaje]);
   }
 
   /**

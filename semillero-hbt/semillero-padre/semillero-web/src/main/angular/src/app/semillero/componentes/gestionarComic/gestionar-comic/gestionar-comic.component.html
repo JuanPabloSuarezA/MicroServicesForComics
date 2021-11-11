@@ -12,6 +12,7 @@
                 <div class="col-6">
                 <!--  todos los componentes por label  input deben tener id -->
                 <!-- se ocupan 6 columnas por componente -->
+
                     <label for="nombreComic">Nombre:</label>
                     <input type="text" class="form-control" id="nombreComic" maxlength="50" formControlName="nombre"
                         [ngClass]="{ 'is-invalid' :  submitted && f.nombre.errors }">
@@ -125,6 +126,11 @@
                     <button type="button" class="btn btn-primary" (click)="activarCampos()">Activar campos</button>
                 </div>
             </div>
+
+            <div *ngIf="mostrarItem" class="alert alert-info" role="alert">
+                <pre>{{ mensajeEjecucion}}</pre> 
+                <button type="button" class="btn btn-primary" (click)="cerrar()">Cerrar</button>
+            </div>
     
     
           <div class="row">
@@ -153,9 +159,13 @@
                                 <td>{{comic.cantidad }}</td>
                                 <td>
                                     <i class="fas fa-search 2x ml-1" (click)="consultarComic(i)" title="Consultar"></i>
-                                    <!--<i class="fas fa-pencil-alt 2x ml-1"  [routerLink]="['/bienvenida', comic]" title="Editar"></i>-->
+                                    
                                     <i class="fas fa-pencil-alt 2x ml-1"  (click)="editarComic(i)" title="Editar"></i>
                                     <i class="far fa-times-circle 2x ml-1"  (click)="eliminarComic(i)" title="Eliminar"></i>
+                                    <!-- se usa event binding para invocar el metodo de dirigirse
+                                    al componente de comprar comic enviandole el comic respectivo -->
+                                    <i class="fas fa-dollar-sign 2x ml-1" 
+                                    (click)="irAComponenteGestionarCompraComic(comic)" title="Comprar"></i>
                                 </td>   
                             </tr>
                         </tbody>
@@ -166,10 +176,7 @@
             
     
     
-        <div *ngIf="mostrarItem" class="alert alert-info" role="alert">
-            ITEM SELECCIONADO: <pre>{{ mensajeEjecucion | json }}</pre> 
-            <button type="button" class="btn btn-primary" (click)="cerrar()">Cerrar</button>
-        </div>
+        
     
         </form>
     </div>

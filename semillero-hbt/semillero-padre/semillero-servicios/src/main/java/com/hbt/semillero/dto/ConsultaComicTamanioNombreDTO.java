@@ -21,14 +21,15 @@ public class ConsultaComicTamanioNombreDTO extends ResultadoDTO{
 	/**
 	 * Atributo que determina los nombres mayores a una longitud
 	 */
-	private List<String> nombresMayorIgual = new ArrayList<>();
+	private List<String> nombresMayorIgual;
 	/**
 	 * Atributo que determina los nombres menores a una longitud
 	 */
-	private List<String> nombresMenor = new ArrayList<>();
+	private List<String> nombresMenor;
 	
 	public ConsultaComicTamanioNombreDTO() {
-		//Constructor vacio
+		nombresMayorIgual = new ArrayList<>();
+		nombresMenor = new ArrayList<>();
 	}
 	
 	/**

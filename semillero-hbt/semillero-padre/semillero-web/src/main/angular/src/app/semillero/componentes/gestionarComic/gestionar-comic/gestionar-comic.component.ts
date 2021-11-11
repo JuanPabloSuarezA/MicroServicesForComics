@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ComicDTO } from 'src/app/semillero/dto/comic-dto';
-import { GestionarComicService } from 'src/app/semillero/servicios/gestionar-comic.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ComicDTO } from "src/app/semillero/dto/comic-dto";
+import { GestionarComicService } from "src/app/semillero/servicios/gestionar-comic.service";
 
 /**
  * @description Componente encargado de gestionar la logica para crear consultar actualizar y eliminar
@@ -11,43 +11,46 @@ import { GestionarComicService } from 'src/app/semillero/servicios/gestionar-com
  * @see SEMILLERO 2021
  */
 @Component({
-  selector: 'gestionar-comic',
-  templateUrl: './gestionar-comic.component.html'
+  selector: "gestionar-comic",
+  templateUrl: "./gestionar-comic.component.html",
 })
 export class GestionarComicComponent implements OnInit {
+  public gestionarComicForm: FormGroup;
 
-  public gestionarComicForm : FormGroup;
+  public comicDTO: ComicDTO;
 
-  public comicDTO : ComicDTO;
+  public comicDTOInfo: ComicDTO;
 
-  public comicDTOInfo : ComicDTO;
+  public nombre: string;
 
-  public nombre : string;
+  public listaComics: Array<ComicDTO>;
 
-  public listaComics : Array<ComicDTO>;
-  
-  public mostrarItem : boolean;
+  public mostrarItem: boolean;
 
-  public submitted : boolean;
+  public submitted: boolean;
 
-  public mensajeEjecucion : string;
+  public mensajeEjecucion: string;
 
-  public idComic: number; 
+  public idComic: number;
 
   // en el constructor se inyectan utilidades, clases o servicios
 
-  constructor(private fb : FormBuilder, private router : Router,
-     private gestionComicsService: GestionarComicService) { 
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private gestionComicsService: GestionarComicService
+  ) {
     this.gestionarComicForm = this.fb.group({
-      nombre : [null, Validators.required],
-      editorial : [null, Validators.required],
-      tematica : [null],
-      coleccion : [null, Validators.required],
-      numeroPaginas : [null, Validators.required],
-      precio : [null, Validators.required],
-      autores : [null],
+      nombre: [null, Validators.required],
+      editorial: [null, Validators.required],
+      tematica: [null],
+      coleccion: [null, Validators.required],
+      numeroPaginas: [null, Validators.required],
+      precio: [null, Validators.required],
+      autores: [null],
       cantidad: [null, Validators.required],
-      color : [true]
+      color: [true],
     });
   }
 
@@ -58,32 +61,34 @@ export class GestionarComicComponent implements OnInit {
     this.listaComics = new Array<ComicDTO>();
     this.consultarComics();
     console.log("GESTIONAR COMIC");
-    this.idComic = null; 
-    this.gestionComicsService.consultarUnComic(7).subscribe(data =>{
-      console.log(data);
-    },error => {
-      console.log("ERROR PRESENTADO :" + error);
-    })
+    this.idComic = null;
+
+    let mensaje: any = this.activatedRoute.snapshot.params;
+    this.mensajeEjecucion = mensaje.mensajeEjecucion;
+
+    if (this.mensajeEjecucion != "" && this.mensajeEjecucion != null) {
+      this.mostrarItem = true;
+    }
+    
   }
 
-  public consultarComics(){
-    this.gestionComicsService.consultarComics().subscribe(data =>
-      {
-        if (data.exitoso ) {
+  public consultarComics() {
+    this.gestionComicsService.consultarComics().subscribe(
+      (data) => {
+        if (data.exitoso) {
           this.listaComics = data.listaComics;
-        }else{
+        } else {
           this.mensajeEjecucion = data.mensajeEjecucion;
           console.log(data.mensajeEjecucion);
         }
-        
-      }, error => {
+      },
+      (error) => {
         console.log(error);
-        
       }
-    )
+    );
   }
 
-  public editarComic(posicion: number) : void {
+  public editarComic(posicion: number): void {
     this.activarCampos();
 
     let comic = this.listaComics[posicion];
@@ -100,31 +105,31 @@ export class GestionarComicComponent implements OnInit {
     this.idComic = comic.id;
   }
 
-  public editarComicSubscribe() : void {
+  public editarComicSubscribe(): void {
+    this.comicDTO.id = this.idComic;
 
-    this.comicDTO.id = this.idComic; 
-
-    this.gestionComicsService.actualizarComic(this.comicDTO).subscribe(data => {
-      if (data.exitoso ) {
-         this.mostrarItem = true;
-         this.mensajeEjecucion = data.mensajeEjecucion;
-         console.log(data.mensajeEjecucion);
-         this.consultarComics();  
-      }else{
-        this.mostrarItem = true;
-        this.mensajeEjecucion = data.mensajeEjecucion;
+    this.gestionComicsService.actualizarComic(this.comicDTO).subscribe(
+      (data) => {
+        if (data.exitoso) {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+          console.log(data.mensajeEjecucion);
+          this.consultarComics();
+        } else {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+        }
+        this.limpiarDatosComic();
+      },
+      (error) => {
+        console.log(error);
       }
-      this.limpiarDatosComic();
-    }, error => {
-      console.log(error);
-    })
+    );
 
-
-    this.idComic = null; 
+    this.idComic = null;
   }
 
-
-  public crearComic() : void {
+  public crearComic(): void {
     this.submitted = true;
     if (this.gestionarComicForm.invalid) {
       return;
@@ -133,9 +138,11 @@ export class GestionarComicComponent implements OnInit {
     this.comicDTO = new ComicDTO();
     this.comicDTO.nombre = this.gestionarComicForm.controls.nombre.value;
     this.comicDTO.editorial = this.gestionarComicForm.controls.editorial.value;
-    this.comicDTO.tematicaEnum = this.gestionarComicForm.controls.tematica.value;
+    this.comicDTO.tematicaEnum =
+      this.gestionarComicForm.controls.tematica.value;
     this.comicDTO.coleccion = this.gestionarComicForm.controls.coleccion.value;
-    this.comicDTO.numeroPaginas = this.gestionarComicForm.controls.numeroPaginas.value;
+    this.comicDTO.numeroPaginas =
+      this.gestionarComicForm.controls.numeroPaginas.value;
     this.comicDTO.precio = this.gestionarComicForm.controls.precio.value;
     this.comicDTO.autores = this.gestionarComicForm.controls.autores.value;
     this.comicDTO.color = this.gestionarComicForm.controls.color.value;
@@ -146,43 +153,47 @@ export class GestionarComicComponent implements OnInit {
       return this.editarComicSubscribe();
     }
 
-
-    this.gestionComicsService.crearComic(this.comicDTO).subscribe(data => {
-      if (data.exitoso ) {
-         this.mostrarItem = true;
-         this.mensajeEjecucion = data.mensajeEjecucion;
-         console.log(data.mensajeEjecucion);
-         this.consultarComics();  
-      }else{
-        this.mostrarItem = true;
-        this.mensajeEjecucion = data.mensajeEjecucion;
+    this.gestionComicsService.crearComic(this.comicDTO).subscribe(
+      (data) => {
+        if (data.exitoso) {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+          console.log(data.mensajeEjecucion);
+          this.consultarComics();
+        } else {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+        }
+        this.limpiarDatosComic();
+      },
+      (error) => {
+        console.log(error);
       }
-      this.limpiarDatosComic();
-    }, error => {
-      console.log(error);
-    })
+    );
   }
 
-
-  public eliminarComic(posicion: number) : void {
+  public eliminarComic(posicion: number): void {
     let comic = this.listaComics[posicion];
-    this.gestionComicsService.eliminarComic(comic.id).subscribe(data => {
-      if (data.exitoso ) {
-         this.mostrarItem = true;
-         this.mensajeEjecucion = data.mensajeEjecucion;
-         console.log(data.mensajeEjecucion);
-         this.consultarComics();  
-      }else{
-        this.mostrarItem = true;
-        this.mensajeEjecucion = data.mensajeEjecucion;
+    this.gestionComicsService.eliminarComic(comic.id).subscribe(
+      (data) => {
+        if (data.exitoso) {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+          console.log(data.mensajeEjecucion);
+          this.consultarComics();
+        } else {
+          this.mostrarItem = true;
+          this.mensajeEjecucion = data.mensajeEjecucion;
+        }
+        this.limpiarDatosComic();
+      },
+      (error) => {
+        console.log(error);
       }
-      this.limpiarDatosComic();
-    }, error => {
-      console.log(error);
-    })
+    );
   }
 
-  private limpiarDatosComic() : void {
+  private limpiarDatosComic(): void {
     this.submitted = false;
     this.gestionarComicForm.controls.nombre.setValue(null);
     this.gestionarComicForm.controls.editorial.setValue(null);
@@ -195,7 +206,7 @@ export class GestionarComicComponent implements OnInit {
     this.gestionarComicForm.controls.cantidad.setValue(null);
   }
 
-  public consultarComic(posicion : number) : void {
+  public consultarComic(posicion: number): void {
     let comic = this.listaComics[posicion];
     this.f.nombre.setValue(comic.nombre);
     this.f.editorial.setValue(comic.editorial);
@@ -206,7 +217,6 @@ export class GestionarComicComponent implements OnInit {
     this.f.autores.setValue(comic.autores);
     this.f.color.setValue(comic.color);
     this.f.cantidad.setValue(comic.cantidad);
-
 
     this.f.nombre.disable();
     this.f.editorial.disable();
@@ -219,7 +229,7 @@ export class GestionarComicComponent implements OnInit {
     this.f.cantidad.disable();
   }
 
-  public activarCampos() : void {
+  public activarCampos(): void {
     this.f.nombre.enable();
     this.f.editorial.enable();
     this.f.tematica.enable();
@@ -232,17 +242,24 @@ export class GestionarComicComponent implements OnInit {
     this.limpiarDatosComic();
   }
 
-  public cerrar() : void {
+  public cerrar(): void {
     this.mostrarItem = false;
   }
 
-  public irAComponenteBienvida(comic : ComicDTO) : void {
+  public irAComponenteBienvida(comic: ComicDTO): void {
     this.cerrar();
-    this.router.navigate(['bienvenida', comic]);
+    this.router.navigate(["bienvenida", comic]);
+  }
+
+
+  //Método para enrutar hacia la clase de gestionar la compra enviandole el objeto ComicDTO
+  //de la fila seleccionada
+  public irAComponenteGestionarCompraComic(comicDTO: ComicDTO): void {
+    this.cerrar();
+    this.router.navigate(["app-gestionar-compra-comic", comicDTO]);
   }
 
   get f() {
     return this.gestionarComicForm.controls;
   }
-
 }
